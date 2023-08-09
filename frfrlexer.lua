@@ -22,11 +22,13 @@ tokens.keyword = {
     "if",
     "then",
     "else",
+    "elseif",
     "end",
     "while",
     "for",
     "do",
-    "function"
+    "function",
+    "inline"
 }
 tokens.operator = {
     "and",
@@ -42,10 +44,14 @@ tokens.math = {
     "="
 }
 tokens.data_type = {
-    "byte",
-    "word",
-    "dword",
-    "qword",
+    "u8",
+    "s8",
+    "u16",
+    "s16",
+    "u32",
+    "s32",
+    "u64",
+    "s64",
     "string"
 }
 tokens.conditional = {
@@ -61,6 +67,7 @@ tokens.compiler_keyword = {
     "#ifdef",
     "#then",
     "#else",
+    "#elseifdef",
     "#end",
     "#suppress"
 }
@@ -111,7 +118,6 @@ end
 table.insert(stopWords, tokens.seperator)
 table.insert(stopWords, tokens.comment)
 table.insert(stopWords, '\n')
-table.insert(stopWords, ';')
 table.insert(stopWords, "'")
 table.insert(stopWords, '"')
 stopTemp = nil
@@ -143,7 +149,6 @@ end
 getTypeTemp = nil
 
 getType[","] = "seperator"
-getType[";"] = "break"
 getType["\n"] = "newline"
 
 local function isType(str, type)
@@ -154,7 +159,7 @@ local function isType(str, type)
     return ret
 end
 
-function lexer.parse(str)
+function lexer.lex(str)
     if type(str) ~= "string" then return nil end
     local retTokens = {}
     local retTypes = {}
@@ -273,7 +278,12 @@ function lexer.parse(str)
         end
     end
 
-    return retTokens, retTypes, retPos
+    local retTable = {}
+    retTable["tokens"] = retTokens
+    retTable["types"] = retTypes
+    retTable["pos"] = retPos
+
+    return retTable
 end
 
 return lexer

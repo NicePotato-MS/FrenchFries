@@ -16,11 +16,15 @@
             "include": "#surroundingPairs"
         },
         {
-            "match": "\\b(if|then|else|while|do|for|end|return|function)\\b",
+            "match": "\\b(if|then|else|elseif|while|do|for|end|return|function)\\b",
             "name": "keyword.control.frenchfries"
         },
         {
-            "match": "\\b(byte|word|dword|qword|string)\\b",
+            "match": "\\b(#define|#ifdef|#then|#else|#elseifdef|#end|#supress)\\b",
+            "name": "meta.preprocessor.frenchfries"
+        },
+        {
+            "match": "\\b(u8|s8|u16|s16|u32|s32|u64|u64|string)\\b",
             "name": "storage.type.frenchfries"
         },
         {

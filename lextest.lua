@@ -1,5 +1,5 @@
 local lexer = require("frfrlexer")
-local tableserial = require("tableserial")
+local tbl = require("frfrtable")
 
 local function fileExists(filename)
     local file = io.open(filename, "r")
@@ -32,21 +32,12 @@ local function appendToFile(text)
     file:flush()
 end
 
--- local tokens, types = lexer.parse([[if+then
--- --Hello
--- --wow
--- 'string';'more string'
--- "also a string"
--- 'how sad, this string is incomplete!
--- 'even worse, this is at eof!]])
--- print(tableserial(tokens))
--- print(tableserial(types))
-
 local FFscript = io.open("example.frfr","r")
 if not FFscript then os.exit(-1) end
-local tokens, types, pos = lexer.parse(FFscript:read("a"))
-appendToFile(tableserial(tokens))
-appendToFile(tableserial(types))
-appendToFile(tableserial(pos))
+local lexed = lexer.lex(FFscript:read("a"))
+if not lexed then os.exit(-2) end
+appendToFile(tbl.serial(lexed.tokens))
+appendToFile(tbl.serial(lexed.types))
+appendToFile(tbl.serial(lexed.pos))
 
 file:close()
